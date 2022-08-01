@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  nginx:
+    image: nginx:latest # change this in production for a fixed value
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # where the nginx config is located
+      - ./nginx/:/etc/nginx/conf.d/:ro
+      # where certbot placed the initial tls cert, and where refreshed certs will be placed
+      - /etc/letsencrypt:/etc/letsencrypt:rw
+      # where certbot writes challenge files to when being challenged by a Let's Encrypt server
+      - /var/www/certbot:/var/www/certbot:ro
+
+  cert-renew:
+    container_name: certrenew
+    build:
+      context: .
+      dockerfile: ./certbot/renew/Dockerfile
+    volumes:
+      # where the certs are located
+      - /etc/letsencrypt:/etc/letsencrypt:rw
+      # where the renew challenge will be written and then served by nginx
+      - /var/www/certbot:/var/www/certbot:rw

@@ -1,0 +1,14 @@
+version: 3.9
+
+services:
+  certbot-initial:
+    image: certbot/certbot:latest # change to fixed version in production
+    container_name: certbot-initial
+    volumes:
+      # where certbot will place the certificates once the challenge is complete. rw allows read write.
+      - /etc/letsencrypt:/etc/letsencrypt:rw
+    ports:
+      # bind 80 on the host, to 80 on the container. this allows certbot to receive the challenge from Let's Encrypt
+      - "80:80"
+    # see explanation below
+    command: certonly --standalone --email my@email.com --agree-tos --preferred-challenges http --dry-run -d my.site.com

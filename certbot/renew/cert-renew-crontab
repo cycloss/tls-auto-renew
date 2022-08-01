@@ -1,0 +1,4 @@
+# at midnight, and 12pm
+# redirect to stdout and stderr of container
+# use --webroot instead of --nginx, as the latter will modify the nginx config 
+0 0,12 * * * certbot renew --webroot -w /var/www/certbot > /proc/1/fd/1 2>/proc/1/fd/2
