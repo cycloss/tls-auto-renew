@@ -13,8 +13,10 @@ services:
       - ./nginx/:/etc/nginx/conf.d/:ro
       # where certbot placed the initial tls cert, and where refreshed certs will be placed
       - /etc/letsencrypt:/etc/letsencrypt:rw
-      # where certbot writes challenge files to when being challenged by a Let's Encrypt server
+      # where certbot signs and writes challenge files to when being challenged by a Let's Encrypt server
       - /var/www/certbot:/var/www/certbot:ro
+      # mounting the reload-cert.sh script into docker-entrypoint.d will cause it to be run on start
+      - ./nginx/reload-cert.sh:/docker-entrypoint.d/reload-cert.sh:ro
 
   cert-renew:
     container_name: certrenew
@@ -24,5 +26,5 @@ services:
     volumes:
       # where the certs are located
       - /etc/letsencrypt:/etc/letsencrypt:rw
-      # where the renew challenge will be written and then served by nginx
+      # where the renew challenge will be written to by certbot, and then served by nginx
       - /var/www/certbot:/var/www/certbot:rw

@@ -1,4 +1,4 @@
-version: 3.9
+version: "3.9"
 
 services:
   certbot-initial:
@@ -11,4 +11,4 @@ services:
       # bind 80 on the host, to 80 on the container. this allows certbot to receive the challenge from Let's Encrypt
       - "80:80"
     # see explanation below
-    command: certonly --standalone --email my@email.com --agree-tos --preferred-challenges http --dry-run -d my.site.com
+    command: certonly --standalone --email my@email.com --agree-tos --preferred-challenges http --dry-run -d my.domain.com

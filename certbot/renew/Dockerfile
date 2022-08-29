@@ -1,6 +1,6 @@
 FROM certbot/certbot:v1.27.0
 
-COPY cert-renew-crontab /etc/crontabs
+COPY certbot/renew/cert-renew-crontab /etc/crontabs
 
 # load crontab file
 RUN crontab /etc/crontabs/cert-renew-crontab
